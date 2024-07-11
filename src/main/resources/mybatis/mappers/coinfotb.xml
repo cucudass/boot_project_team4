@@ -1,0 +1,32 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.boot.dao.CoinfotbDAO">
+     <insert id="insert">
+        insert into coinfotb
+        	(cuserid, csrno, cusnm, bossnm, loc01, loc02, indue, deptno, emnum, binfo, adate)
+		values
+			(#{cuserid} ,#{csrno}, #{cusnm}, #{bossnm}, #{loc01}, #{loc02}, #{indue}, #{deptno}
+			, #{emnum}, #{binfo}, now())
+    </insert>
+	
+	<select id="Coinfotblist" parameterType="hashmap" resultType="com.boot.dto.CoinfotbDTO">
+		SELECT * FROM coinfotb WHERE cuserid = #{cuserid}
+	</select>
+	
+	<update id="Coinmodify" parameterType="hashmap">
+		UPDATE coinfotb SET
+	        csrno = #{csrno},
+	        cusnm = #{cusnm},
+	        bossnm = #{bossnm},
+	        loc01 = #{loc01},
+	        loc02 = #{loc02},
+	        indue = #{indue},
+	        deptno = #{deptno},
+	        emnum = #{emnum},
+	        binfo = #{binfo},
+	        adate = NOW()
+    	WHERE cuserid = #{cuserid}
+	</update>
+</mapper>
