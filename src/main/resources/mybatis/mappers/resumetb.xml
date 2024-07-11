@@ -52,8 +52,17 @@
 	<select id="resumeselect" resultType="com.boot.dto.ResumetbDTO">
 		select puserid, prono, protitle, prstitle, pname, gendr, birdy, imgcd, email, 
 			   phone, paddr, prsup, prsself, classgb, shoolnm, grade, gradesta, majornm,
-			   credit, score, sdate, edate, salary, armgu, propo, proself, prcnt, adate, mdate 
-		from resumetb
+			   credit, score, sdate, edate, salary, armgu, propo, proself, prcnt, adate, mdate,
+		       imgno, usetb, gubun, uuid, uploadpath
+		from
+		(
+			select a.puserid, a.prono, a.protitle, a.prstitle, a.pname, a.gendr, a.birdy, a.imgcd, a.email,
+				   a.phone, a.paddr, a.prsup, a.prsself, a.classgb, a.shoolnm, a.grade, a.gradesta, a.majornm,
+				   a.credit, a.score, a.sdate, a.edate, a.salary, a.armgu, a.propo, a.proself, a.prcnt, a.adate, a.mdate,
+		           b.imgno, b.usetb, b.gubun, b.uuid, b.uploadpath
+			from resumetb a
+		    left outer join imgtb b on (b.usetb = 'resumetb' and gubun = concat(a.puserid, '_', a.prono))
+		) as a
 		where puserid = #{puserid} and prono = #{prono}
 	</select>
 	

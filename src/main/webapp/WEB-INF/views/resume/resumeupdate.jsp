@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,6 +32,7 @@
                     <div class="form-section">
                         <div class="photo-preview" id="photoPreview">
                             <!-- 선택한 사진 미리보기 영역 -->
+                            <img src="show_resume_img?writer=${resumeselect.puserid}&prono=${resumeselect.prono}&imgno=${resumeselect.imgno}&imggubun=b">
                         </div>
                         <div class="input-container">
                             <textarea class="fixed-size-textarea" name="prsself" placeholder="간략한 소개글...">${resumeselect.prsself }</textarea>
@@ -90,8 +90,9 @@
                     </div>
                     <h3>내가 선택한 스킬 (<span id="selectedCount">0</span>/15)</h3>
                     <div class="selected-skills">
+                    	<%-- <input type="hidden" id="selectedSkills" name="selectedSkills" value=""> --%>
                         <c:forEach items="${skilldto }" var="skilldto">
-                            <button type="button" data-skill="${skilldto.skillname }" data-no="${skilldto.sequeno }" name="skillbutton" class="selected-skill">${skilldto.skillname }</button>
+                            <button type="button" data-skill="${skilldto.skillname }" data-no="${skilldto.sequeno }" name="skillbutton" class="selected-skill" onclick="removeskill(this)">${skilldto.skillname }</button>
                         </c:forEach>
                     </div>
                     <button type="button" class="reset-button">초기화</button>

@@ -8,20 +8,36 @@ $(document).ready(function() {
     const $resetButton = $('.reset-button');
     const $anotherMajorBtn = $('#anotherMajorBtn');
     const $graduationWorkBtn = $('#graduationWorkBtn');
-
-    let selectedSkills = [];
-
+	
+	var selectedSkills = [];
+	
+	var selectedCount = $('.selected-skill');
+	if(selectedCount.length > 0){
+		selectedCount.each(function() {
+    		var selectedNo = $(this).data('no');
+    		$('.skill-button[data-no="' + selectedNo + '"]').addClass('selected');
+    		selectedSkills.push(selectedNo);
+    	});
+		updateSelectedCount();
+	}
+	console.log('selectedSkills: '+selectedSkills);
+	console.log('selectedSkills length: '+selectedSkills.length);
+	
     $skillButtons.on('click', function(event) {
         event.preventDefault();
         const skill = $(this).text();
 		const no = $(this).val();
-
-        if (selectedSkills.includes(skill)) {
-            selectedSkills = selectedSkills.filter(s => s !== skill);
+		console.log('skill: '+skill);
+		console.log('no: '+no);
+		
+        if (selectedSkills.some(s => parseInt(s) === parseInt(no))) {
+			console.log("값이 있음");
+            selectedSkills = selectedSkills.filter(s => parseInt(s) !== parseInt(no));
             $(this).removeClass('selected');
-            $(`.selected-skills button[data-skill="${skill}"]`).remove();
+            $(`.selected-skills button[data-no="${no}"]`).remove();
         } else if (selectedSkills.length < 15) {
-            selectedSkills.push(skill);
+			console.log("값이 없음");
+            selectedSkills.push(no);
             $(this).addClass('selected');
 
             const $selectedButton = $('<button>')
@@ -31,7 +47,7 @@ $(document).ready(function() {
 				.attr('name', 'skillbutton')
                 .addClass('selected-skill')
                 .on('click', function() {
-                    selectedSkills = selectedSkills.filter(s => s !== skill);
+                    selectedSkills = selectedSkills.filter(s => parseInt(s) !== parseInt(no));
                     //$(this).removeClass('selected');
 					$(`#show-skill button[data-no="${no}"]`).removeClass('selected');
                     $selectedButton.remove();
@@ -40,8 +56,9 @@ $(document).ready(function() {
             $selectedSkillsContainer.append($selectedButton);
         }
         updateSelectedCount();
+		console.log('selectedSkills: '+selectedSkills);
     });
-
+	
     $('#photo').on('change', function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -118,6 +135,18 @@ function updateResume() {
 	}
 	
 	document.resumeupfrm.submit();
+}
+
+function removeskill(button) {
+	var no = $(button).data('no'); //해당 버튼의 data-no의 값 가져오기
+	$(button).remove(); //해당 버튼 삭제
+
+	// 해당 selectedNo 값을 가진 skill-button에서 selected 클래스를 제거
+	$('.skill-button[data-no="' + no + '"]').removeClass('selected');
+
+	//삭제 후 버튼 수량 체크
+	var selectedCount = $('.selected-skill').length;
+	$('#selectedCount').text(selectedCount);
 }
 
 function formatDate(event){
