@@ -48,7 +48,7 @@
 		(
 			select a.cuserid, a.csrno, a.jobno, e.cusnm, a.jobtitle, a.position, a.prsup, b.careernm, a.wrktm,
 				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.adate, a.ddate,
-				   TIMESTAMPDIFF(DAY, date(a.adate), date(a.ddate)) as daycha,
+				   TIMESTAMPDIFF(DAY, now(), date(a.ddate)) as daycha,
 				   row_number() over(order by a.adate asc) as rn
 			from jobposttb as a
 			inner join careertb b on (a.prsup = b.careerno)
@@ -66,7 +66,7 @@
 		(
 			select a.cuserid, a.csrno, a.jobno, e.cusnm, a.jobtitle, a.position, a.prsup, b.careernm, a.wrktm,
 				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.adate, a.ddate,
-				   TIMESTAMPDIFF(DAY, date(a.adate), date(a.ddate)) as daycha,
+				   TIMESTAMPDIFF(DAY, now(), date(a.ddate)) as daycha,
 				   row_number() over(order by a.adate asc) as rn
 			from jobposttb as a
 			inner join careertb b on (a.prsup = b.careerno)
@@ -116,7 +116,8 @@
 		select cuserid, csrno, jobno, jobtitle, jobsubtitle, content,
 			   prsup, salary, educa, loc01, wrkty, wrktm, position, skills,
 			   duties, pfntcd, wrkcd, benefits, scrnpcd, pamoa, rcmpcd,
-			   notic, recno, supno, ddate, adate, mdate
+			   notic, recno, supno, ddate, adate, mdate,
+			   TIMESTAMPDIFF(DAY, now(), date(ddate)) as daycha
 		from jobposttb 
 		where cuserid = #{cuserid} and csrno = #{csrno} and jobno = #{jobno}
 	</select>

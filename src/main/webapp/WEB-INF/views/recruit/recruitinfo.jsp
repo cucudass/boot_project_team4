@@ -253,8 +253,15 @@
 		<br>
 		<div class="apply-button">
 			<c:set var="status" value="${status }"/>
+			<c:set var="daycha" value="${jobinfoData.daycha }"/>
 			<c:if test="${status == 'p'}">
-				<button type="button" onclick="openResumePopup('${jobinfoData.cuserid }','${jobinfoData.csrno }','${jobinfoData.jobno }');">지원 하기</button>
+				<c:if test="${daycha >= 0 }">
+					<button type="button" onclick="openResumePopup('${jobinfoData.cuserid }','${jobinfoData.csrno }','${jobinfoData.jobno }');">지원 하기</button>
+				</c:if>
+				<c:if test="${daycha < 0 }">
+					<button type="button">공고 마감</button>
+				</c:if>
+				<button type="button" onclick="move_mylist();">목록 보기</button>
 			</c:if>
 			<c:if test="${status == 'ps'}">
 				<button type="button" onclick="move_mylist();">목록 보기</button>				
