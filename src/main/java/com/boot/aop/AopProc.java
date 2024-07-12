@@ -21,8 +21,8 @@ public class AopProc {
 	//@Around("execution(* com.boot.controller.MyPageController.*())")
 	//@Around("execution(* com.boot.controller.MyPageController.*(..)) || execution(* com.boot.controller.RecruitController.*())") // 여러 개를 걸때
 	@Around("execution(* com.boot.controller.MyPageController.*(..)) || execution(* com.boot.controller.RecruitController.*(..)) " 
-			+ "|| execution(* com.boot.controller.BoardController.*(..)) || execution(* com.boot.controller.CommentController.*(..)) "
-			+ "|| execution(* com.boot.controller.ResumeController.*(..)) || execution(* com.boot.controller.JobaplytbController.*(..))")
+			+ "|| execution(* com.boot.controller.BoardController.*(..)) || execution(* com.boot.controller.CommentController.*(..)) ")
+			//+ "|| execution(* com.boot.controller.ResumeController.*(..)) || execution(* com.boot.controller.JobaplytbController.*(..))")
 	public Object loggerAop(ProceedingJoinPoint joinpoint) throws Throwable {
 		log.info("@# loggerAop");
 		//세션 아이디 체크(일반 && 기업)
@@ -45,7 +45,7 @@ public class AopProc {
 	    // proceed() 메서드를 호출하여 원본 메서드를 실행
 	    return joinpoint.proceed();
 	}
-	
+	/*
 	@Around("execution(* com.boot.controller.RecruitController.*(..))")
 	public Object loggerAop_company(ProceedingJoinPoint joinpoint) throws Throwable {
 		log.info("@# loggerAop_company");
@@ -69,7 +69,8 @@ public class AopProc {
 	    // proceed() 메서드를 호출하여 원본 메서드를 실행
 	    return joinpoint.proceed();
 	}
-/*
+	*/
+	/*
 	@Around("execution(* com.boot.controller.JobaplytbController.*(..)) ")
 	public Object loggerAop_person(ProceedingJoinPoint joinpoint) throws Throwable {
 		log.info("@# loggerAop_company");
