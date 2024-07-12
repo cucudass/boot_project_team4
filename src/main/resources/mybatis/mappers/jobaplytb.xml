@@ -15,7 +15,7 @@
 					   row_number() over(order by a.adate desc) as rn
 			 	from jobaplytb a 
 				inner join jobposttb b on (a.cuserid = b.cuserid and a.csrno = b.csrno and a.jobno = b.jobno)
-				inner join resumetb c on (a.puserid = c.puserid)
+				inner join resumetb c on (a.puserid = c.puserid and a.prono = c.prono)
 			) as a
 			where puserid = #{puserid} 
 		) as a
@@ -29,7 +29,7 @@
 				select a.cuserid, a.csrno, a.jobno, a.puserid, b.jobtitle, b.jobsubtitle
 			 	from jobaplytb a 
 				inner join jobposttb b on (a.cuserid = b.cuserid and a.csrno = b.csrno and a.jobno = b.jobno)
-				inner join resumetb c on (a.puserid = c.puserid)
+				inner join resumetb c on (a.puserid = c.puserid and a.prono = c.prono)
 			) as a
 		where puserid = #{puserid} 
 	</select>

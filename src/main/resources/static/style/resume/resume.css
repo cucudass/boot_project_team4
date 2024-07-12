@@ -78,7 +78,7 @@ nav ul li.user {
     box-sizing: border-box;
 }
 .fixed-size-textareas {
-    width: 800px; 
+    width: 1000px; 
     height: 250px;
     resize: none;
     padding: 10px; 

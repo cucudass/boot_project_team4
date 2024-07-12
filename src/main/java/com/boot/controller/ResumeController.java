@@ -167,8 +167,8 @@ public class ResumeController {
 		return "resume/resumeupdate";
 	}
 	
-	@RequestMapping("/resumeupdate") // 사용가능한 스킬 및 이미지 수정 해야됨... 현재는 이력서(resumetb만 수정)
-	public String resumeupdate(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
+	@RequestMapping("/resumeupdate") //이력서 수정
+	public String resumeupdate(@RequestParam HashMap<String, String> param, @RequestParam("imgfile") MultipartFile uploadFile, Model model, HttpSession session) {
 		log.info("@# resumeupdate");
 		log.info("@# param => " + param);
 		String puserid = (String) session.getAttribute("id");
@@ -176,7 +176,50 @@ public class ResumeController {
 		
 		log.info("@# prono => " + param.get("prono"));
 		service.resumeupdate(param); //이력서 업데이트
-		return "redirect:resumelist";
+		
+		//선택한 스킬 세팅
+        if(!param.get("skillno").equals("")) {
+        	//기존의 스킬 삭제 후 다시 insert
+        	skillservice.skilldelete(param); //기존 이력서에 등록된 스킬 삭제
+        	
+	        String[] skill = param.get("skillno").split(",");
+	        
+	        for (int i = 0; i < skill.length; i++) {
+	        	param.put("sequeno", skill[i]);
+	        	skillservice.skillinsert(param);
+			}
+        }
+        
+        //이력서 저장 후 사진 존재 시 저장 
+        if(!uploadFile.isEmpty()) {
+        	//기존 이미지 파일 및 DB 삭제
+        	ImgtbDTO imgtb = new ImgtbDTO();
+        	imgtb.setImgno(Integer.parseInt(param.get("imgno")));
+        	imgtb.setUsetb("resumetb");
+    		imgtb.setGubun(puserid+"_"+param.get("prono"));
+    		
+        	imgservice.imgdelete_resume(imgtb); //이미지 파일 삭제 및 DB 삭제
+        	
+        	//이미지 파일 삭제 및 DB 삭제 후 다시 등록
+        	UUID uuid = UUID.randomUUID(); //중복 방지 랜덤 난수 생성
+        	String uploadFileName = uploadFile.getOriginalFilename(); //업로드되는 파일 이름
+        	
+        	log.info("업로드할 사진이 있음");
+        	String basepath = servletContext.getRealPath("/"); //"D:\\dev\\projectupload";
+    		String path = "resume\\"+puserid;//파일 경로 아이디 기준으로 사진 폴더 생성
+    		
+    		//ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
+    		imgtb = new ImgtbDTO(); //이미지 정보 테이블
+    		//테이블 세팅
+    		imgtb.setUsetb("resumetb");
+    		imgtb.setGubun(puserid+"_"+param.get("prono"));
+    		imgtb.setUuid(uuid.toString());
+    		imgtb.setUploadpath(path);
+    		imgtb.setFilename(uploadFileName);
+    		imgservice.imgupload_resume(imgtb, uploadFile, basepath); //imgtb에 데이터 추가 및 해당 파일 저장
+        }
+
+        return "redirect:resumelist";
 	}
 	
 	@GetMapping("/resumedisplay")

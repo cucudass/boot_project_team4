@@ -16,7 +16,7 @@
         <section class="resume-form">
             <form name="resumeupfrm" method="POST" action="resumeupdate" enctype="multipart/form-data">
                 <input type="hidden" name="prono" value="${resumeselect.prono }">
-                <input type="hidden" name="imgno" value="">
+                <input type="hidden" name="imgno" value="${resumeselect.imgno }">
                 <div class="form-section">
                     <h3>이력서 제목</h3>
                     <div class="form-container">
