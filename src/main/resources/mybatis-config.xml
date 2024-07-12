@@ -21,5 +21,6 @@
 		<mapper resource="mybatis/mappers/skilltb.xml"/>
 		<mapper resource="mybatis/mappers/scribetb.xml"/>
 		<mapper resource="mybatis/mappers/coinfotb.xml"/>
+		<mapper resource="mybatis/mappers/sectortb.xml"/>
 	</mappers>
 </configuration>

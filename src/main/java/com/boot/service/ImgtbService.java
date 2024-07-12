@@ -9,6 +9,7 @@ import com.boot.dto.ImgtbDTO;
 public interface ImgtbService {
 	public void imgupload(ImgtbDTO imgtbdto);
 	public ImgtbDTO getFileselect(HashMap<String, String> param);
+	public ImgtbDTO getFile_coinfo_select(HashMap<String, String> param);
 	
 	public void imgupload_resume(ImgtbDTO imgtbdto, MultipartFile uploadFile, String basepath);
 	public void imgdelete_resume(ImgtbDTO imgtbdto);

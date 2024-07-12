@@ -53,7 +53,11 @@
         </tr>
         <tr>
             <th>보유기술</th>
-            <td colspan="4"></td>
+            <td colspan="4">
+            	<c:forEach items="${skill_list }" var="skill">
+            		${skill.skillname}&nbsp;
+            	</c:forEach>
+            </td>
         </tr>
         <tr>
             <th>포트폴리오</th>

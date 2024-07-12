@@ -73,8 +73,13 @@
 	
 	<select id="jobaplycnt" resultType="int">
 		select count(*) from jobaplytb
-		where puserid = #{puserid} and cuserid = #{puserid} and csrno = #{csrno} and jobno = #{jobno}
+		where puserid = #{puserid} and cuserid = #{cuserid} and csrno = #{csrno} and jobno = #{jobno}
 	</select>
+	
+	<delete id="jobaply_delete">
+		delete from jobaplytb
+		where cuserid = #{cuserid} and csrno = #{csrno} and jobno = #{jobno}
+	</delete>
 	
 </mapper>
 

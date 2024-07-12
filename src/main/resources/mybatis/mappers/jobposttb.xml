@@ -5,6 +5,20 @@
 <mapper namespace="com.boot.dao.JobposttbDAO">
 	<sql id="jobpostSerach"> <!-- 직무, 근무지역, 기업형태 검색 조건 필요 -->
 		<where>
+			<if test="job_s != null and job_s != ''">
+			    AND (
+			        <foreach item="item" index="index" collection="job_s.split(',')" separator=" OR ">
+			            a.wrkty LIKE CONCAT('%', #{item}, '%')
+			        </foreach>
+			    )
+			</if>
+		    <if test="loc_s != null and loc_s != ''">
+		    	and (
+			    	<foreach item="item" index="index" collection="loc_s.split(',')" separator=" OR ">
+			            a.loc01 like CONCAT('%', #{item}, '%')
+			        </foreach>
+		        )
+		    </if>
 			<if test="edu_s != null and edu_s != ''"> <!-- 학력 -->
 			    and a.educa in <!-- 학력 -->
 			    <!-- career_s 문자열을 ','로 분리하여 배열로 만들어 IN 절에 사용 -->

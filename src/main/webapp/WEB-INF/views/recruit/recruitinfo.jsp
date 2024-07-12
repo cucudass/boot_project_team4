@@ -238,6 +238,7 @@
 	            <ul>
 	            	<fmt:formatDate value= "${jobinfoData.ddate}" pattern="yyyy-MM-dd" var="dateValue"/>
 	                <li>접수기간/방법 : ${dateValue} / ${jobinfoData.pamoa}</li>
+	                <li>모집 인원 : ${jobinfoData.recno}</li>
 	                <li>채용 절차 : ${jobinfoData.rcmpcd}</li>
 	            </ul>
 	        </div>

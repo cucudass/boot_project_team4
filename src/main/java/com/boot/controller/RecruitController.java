@@ -20,6 +20,7 @@ import com.boot.dto.JobposttbDTO;
 import com.boot.dto.WrktygbtbDTO;
 import com.boot.service.CareertbService;
 import com.boot.service.EdugbtbService;
+import com.boot.service.JobaplyService;
 import com.boot.service.RecruitService;
 import com.boot.service.WrktygbtbService;
 
@@ -40,6 +41,9 @@ public class RecruitController {
 	
 	@Autowired
 	private WrktygbtbService Wservice;
+	
+	@Autowired
+	private JobaplyService jobaplyservice;
 	
 	@RequestMapping("/recruitadd")
 	public String recruitadd(Model model) {
@@ -94,6 +98,10 @@ public class RecruitController {
 		
 		if (param.get("salary") == null || param.get("salary").trim().isEmpty()) {
 			param.put("salary", defaultValue);
+		}
+		
+		if (param.get("recno") == null || param.get("recno").trim().isEmpty()) {
+			param.put("recno", "0");
 		}
 		
 		service.recruitadd(param);
@@ -167,7 +175,11 @@ public class RecruitController {
 		String cuserid = (String)session.getAttribute("id");
 		param.put("cuserid", cuserid);
 		
+		//공고 이력 삭제
 		service.recruitdelete(param);
+		
+		//해당 공고에 지원한 이력 삭제(jobaplytb)
+		jobaplyservice.jobaply_delete(param);
 		
 		return "redirect:recruitlist";
 	}

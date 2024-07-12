@@ -84,6 +84,7 @@ items.forEach(function(item) {
 	item.addEventListener('click', function(){
 		const text = item.textContent;
 		const value = item.value;
+		alert("value: "+value);
 		const id = $(this).closest('ul').attr('id');
 		addItemToSearchBox(id, value, text);
 	});

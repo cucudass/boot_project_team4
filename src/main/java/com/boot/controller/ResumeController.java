@@ -228,8 +228,12 @@ public class ResumeController {
 		String puserid = (String) session.getAttribute("id");
 		param.put("puserid", puserid);
 		
+		ArrayList<SkilltbDTO> skill_list = skillservice.select_resume(param); // 이력서에 등록된 스킬 목록 조회
+		
 		ResumetbDTO dto = service.resume_view(param);
 		model.addAttribute("resumeselect", dto);
+		model.addAttribute("skill_list", skill_list);
+		
 		return "resume/resumetb_view";
 	}
 	

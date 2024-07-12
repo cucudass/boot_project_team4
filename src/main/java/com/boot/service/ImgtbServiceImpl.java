@@ -139,4 +139,12 @@ public class ImgtbServiceImpl implements ImgtbService {
 		
 		
 	}
+
+	@Override
+	public ImgtbDTO getFile_coinfo_select(HashMap<String, String> param) {
+		log.info("@# getFile_coinfo_select");
+
+		ImgtbDAO dao = sqlsession.getMapper(ImgtbDAO.class);
+		return dao.getFile_coinfo_select(param);
+	}
 }

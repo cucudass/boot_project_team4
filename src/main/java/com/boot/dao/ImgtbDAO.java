@@ -10,6 +10,7 @@ import com.boot.dto.ImgtbDTO;
 public interface ImgtbDAO {
 	public void imgupload(ImgtbDTO imgtbdto);
 	public ImgtbDTO getFileselect(HashMap<String, String> param);
+	public ImgtbDTO getFile_coinfo_select(HashMap<String, String> param);
 	
 	public void imgupload_resume(ImgtbDTO imgtbdto);
 	public ImgtbDTO imgdata(ImgtbDTO imgtbdto);

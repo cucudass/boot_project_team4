@@ -18,9 +18,12 @@ import com.boot.dto.JobaplytbDTO;
 import com.boot.dto.JobposttbDTO;
 import com.boot.dto.PageDTO;
 import com.boot.dto.ResumetbDTO;
+import com.boot.dto.SkilltbDTO;
 import com.boot.service.JobaplyService;
 import com.boot.service.JobposttbService;
 import com.boot.service.ResumeService;
+import com.boot.service.ShowskillService;
+import com.boot.service.SkilltbService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +39,9 @@ public class JobaplytbController {
 	
 	@Autowired
 	private ResumeService resumeservice;
+	
+	@Autowired
+	private SkilltbService skillservice;
 	
 	@RequestMapping("/jobaplylist") //jsp이름
 	public String jobaplylist(@RequestParam HashMap<String, String> param , Model model, HttpSession session) {
@@ -67,10 +73,13 @@ public class JobaplytbController {
 		param.put("cuserid", cuserid); //로그인한 계정
 		param.put("puserid", param.get("writer")); //이력서 작성자 일반 계정
 		
+		ArrayList<SkilltbDTO> skill_list = skillservice.select_resume(param);//이력서에 등록된 스킬 목록 조회
+		
 		Jobaply_service.jobaply_prcnt(param); //이력서 확인 체크
 		ResumetbDTO dto = resumeservice.resume_view(param);
 		
 		model.addAttribute("resumeselect", dto); // ("jobaplylist" 모델객체에서 보내는 이름 list 담는내용
+		model.addAttribute("skill_list", skill_list);
 		
 		return "resume/resumetb_view";
 	}

@@ -73,4 +73,11 @@ public class JobaplyServiceImpl implements JobaplyService{
 		
 		return dao.jobaplycnt(param);
 	}
+
+	@Override
+	public void jobaply_delete(HashMap<String, String> param) {
+		log.info("@# JobaplyServiceImpl jobaply_delete");
+		JobaplytbDAO dao = sqlSession.getMapper(JobaplytbDAO.class);
+		dao.jobaply_delete(param);
+	}
 }
