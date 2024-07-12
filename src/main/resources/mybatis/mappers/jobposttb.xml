@@ -123,7 +123,7 @@
 	</select>
 	
 	<select id="recruitlist" resultType="com.boot.dto.JobposttbDTO">
-        select cuserid, csrno, jobno, jobtitle, jobsubtitle, adate
+        select cuserid, csrno, jobno, jobtitle, jobsubtitle, ddate, adate
 		from jobposttb 
 		where cuserid = #{cuserid}
     </select>
