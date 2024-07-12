@@ -16,6 +16,7 @@
 <body onload="searchBtn()">
 	<section id="section1">
 	    <div class="button-nav">
+	    	<%-- 
 			<dl>
 				<button class="dropdown-button">직무</button>
 				<ul id="job" class="dropdown-content scrollable-content">
@@ -26,6 +27,7 @@
 					<li class="item" value="5">직무 5</li>			
 				</ul>
 			</dl>
+			--%>
 			<dl>
 				<button class="dropdown-button">근무지역</button>
 				<ul id="loc" class="dropdown-content scrollable-content">

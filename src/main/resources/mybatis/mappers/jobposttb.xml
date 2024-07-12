@@ -43,11 +43,11 @@
 	</sql>
     <select id="jobselect" resultType="com.boot.dto.JobposttbDTO">
 	    select cuserid, csrno, jobno, cusnm, jobtitle, position, prsup, careernm, wrktm, salary, educa, edunm,
-			   loc01, wrkty, wrktynm, notic, recno, ddate, daycha, rn
+			   loc01, wrkty, wrktynm, notic, recno, adate, ddate, daycha, rn
 		from
 		(
 			select a.cuserid, a.csrno, a.jobno, e.cusnm, a.jobtitle, a.position, a.prsup, b.careernm, a.wrktm,
-				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.ddate,
+				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.adate, a.ddate,
 				   TIMESTAMPDIFF(DAY, date(a.adate), date(a.ddate)) as daycha,
 				   row_number() over(order by a.adate asc) as rn
 			from jobposttb as a
@@ -65,7 +65,7 @@
 		from
 		(
 			select a.cuserid, a.csrno, a.jobno, e.cusnm, a.jobtitle, a.position, a.prsup, b.careernm, a.wrktm,
-				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.ddate,
+				   a.salary, a.educa, c.edunm, a.loc01, a.wrkty, d.wrktynm, a.notic, a.recno, a.adate, a.ddate,
 				   TIMESTAMPDIFF(DAY, date(a.adate), date(a.ddate)) as daycha,
 				   row_number() over(order by a.adate asc) as rn
 			from jobposttb as a
@@ -78,11 +78,18 @@
     </select>
     
     <select id="mainlist" resultType="com.boot.dto.JobposttbDTO">
-        select a.cuserid, a.csrno, a.jobno, b.cusnm, b.caddr, a.jobtitle, a.ddate, a.position, a.skills
-        from jobposttb a
-        join cusertb b on a.cuserid = b.cuserid
-        order by rand()
-        <!-- LIMIT 10; 랜덤 갯수 출력 -->
+        select cuserid, csrno, jobno, cusnm, loc01, jobtitle, ddate, position, skills,
+	   		   imgno, usetb, gubun, uuid, uploadpath, filename
+		from
+		(
+			select a.cuserid, a.csrno, a.jobno, b.cusnm, a.loc01, a.jobtitle, a.ddate, a.position, a.skills,
+				   c.imgno, c.usetb, c.gubun, c.uuid, c.uploadpath, c.filename
+			from jobposttb a
+			join cusertb b on (a.cuserid = b.cuserid)
+		    left outer join imgtb c on (c.usetb = 'coinfotb' and gubun = concat(b.cuserid, '_', '1'))
+		) as a
+		order by rand()
+		LIMIT 10
     </select>
     
     <insert id="recruitadd">

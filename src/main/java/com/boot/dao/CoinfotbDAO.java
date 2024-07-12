@@ -11,5 +11,6 @@ import com.boot.dto.CoinfotbDTO;
 public interface CoinfotbDAO {
 	public void insert(HashMap<String, String> param);
 	public CoinfotbDTO Coinfotblist(HashMap<String, String> param);
+	public CoinfotbDTO Coinfotbinfo(HashMap<String, String> param);
 	public void Coinmodify(HashMap<String, String> param);
 }

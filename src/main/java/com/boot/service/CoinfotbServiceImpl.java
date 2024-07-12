@@ -43,6 +43,14 @@ public class CoinfotbServiceImpl implements CoinfotbService{
 		CoinfotbDAO dao = sqlSession.getMapper(CoinfotbDAO.class);
 		dao.Coinmodify(param);
 	}
+
+	@Override
+	public CoinfotbDTO Coinfotbinfo(HashMap<String, String> param) {
+		log.info("@# CoinfotbServiceImpl Modify");
+		
+		CoinfotbDAO dao = sqlSession.getMapper(CoinfotbDAO.class);
+		return dao.Coinfotbinfo(param);
+	}
 }
 
 

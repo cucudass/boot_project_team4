@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +26,8 @@
             	<div class="applicant-list">
                     <div id="jobaplylist" class="jobaplylist">
                         <h2>${dto.jobtitle} (${dto.prchk == 1?'*기업에서 확인을 했습니다.*':'*아직 기업에서 확인을 하지 않았습니다.*' })</h2>
-                        <%-- <h2>${dto.adate}</h2> --%>
+                        <fmt:formatDate value="${dto.adate}" pattern="yyyy-MM-dd" var="dateValue"/>
+						지원일자: ${dateValue}                        
                     </div>
                     <div class="button">
                         <button type="button" class="view-button1" onclick="recruitinfo_view('${dto.cuserid}','${dto.csrno}','${dto.jobno}')">보기</button> 

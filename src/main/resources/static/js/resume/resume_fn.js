@@ -149,6 +149,11 @@ function removeskill(button) {
 	$('#selectedCount').text(selectedCount);
 }
 
+function Resumelist() {
+	resumeupfrm.action = "return_list";
+	resumeupfrm.submit();
+}
+
 function formatDate(event){
 	// Get the input element
 	const input = event.target;

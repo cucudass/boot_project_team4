@@ -18,28 +18,17 @@
                 <input type="hidden" name="prono" value="${resumeselect.prono }">
                 <input type="hidden" name="imgno" value="${resumeselect.imgno }">
                 <div class="form-section">
-                    <h3>이력서 제목</h3>
-                    <div class="form-container">
+					<h3>이력서 제목</h3>
+                    <div class="form-container1">
                         <div class="input-container">
                             <input type="text" id="protitle" name="protitle" placeholder=" " value="${resumeselect.protitle }" />
                             <label for="protitle">제목 <span class="c-r">*</span></label>
                         </div>
-                        <div class="input-container">
-                            <input type="text" id="nameInput1" name="prstitle" placeholder=" " value="${resumeselect.prstitle }" />
-                            <label for="protitle">소제목</label>
-                        </div>
                     </div>
-                    <div class="form-section">
+                    <div class="form-section1">
                         <div class="photo-preview" id="photoPreview">
                             <!-- 선택한 사진 미리보기 영역 -->
                             <img src="show_resume_img?writer=${resumeselect.puserid}&prono=${resumeselect.prono}&imgno=${resumeselect.imgno}&imggubun=b">
-                        </div>
-                        <div class="input-container">
-                            <textarea class="fixed-size-textarea" name="prsself" placeholder="간략한 소개글...">${resumeselect.prsself }</textarea>
-                        </div>
-                        <div class="photo-upload">
-                            <label for="photo">사진 추가</label>
-                            <input type="file" id="photo" name="imgfile" accept="image/*" />
                         </div>
                     </div>
                 </div>
@@ -65,6 +54,10 @@
                         <div class="input-container email">
                             <input type="text" id="email" name="email" placeholder=" " required value="${resumeselect.email }" />
                             <label for="email">이메일 <span class="c-r">*</span></label>
+                        </div>
+                        <div class="photo-upload">
+                            <label for="photo">사진 추가</label>
+                            <input type="file" id="photo" name="imgfile" accept="image/*" />
                         </div>
                     </div>
                     <div class="form-container">
@@ -164,6 +157,10 @@
                             </select>
                         </div>
                     </div>
+					<div class="input-container">
+						<h3>포트폴리오</h3>
+						<input type="text" id="propo" name="propo" placeholder="git주소 및 url등록해주세요"  />
+					</div>
                     <div class="form-section">
                         <h3>자기소개서</h3>
                         <div class="form-container">
@@ -173,7 +170,10 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="submit-button" onclick="updateResume()">수정</button>
+                <div>
+	                <button type="button" class="submit-button" onclick="Resumelist()">목록보기</button>&nbsp;
+	                <button type="button" class="submit-button" onclick="updateResume()">수정</button>
+                </div>
             </form>
         </section>
     </div>

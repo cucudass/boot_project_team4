@@ -77,23 +77,23 @@ public class CoinfotbController {
         
         // 파일 업로드
         if (!file.isEmpty()) {
-                UUID uuid = UUID.randomUUID(); // 중복 방지 랜덤 난수 생성
-                String uploadFileName = file.getOriginalFilename(); // 업로드되는 파일 이름
-                String basepath = servletContext.getRealPath("/"); //"D:\\dev\\projectupload"; // 서버 기본 경로 설정
-                String path = "coinfo\\" + cuserid; // 파일 경로 설정
-                String saveFileName = uuid.toString() + "_" + uploadFileName; // 저장할 파일 이름
+            UUID uuid = UUID.randomUUID(); // 중복 방지 랜덤 난수 생성
+            String uploadFileName = file.getOriginalFilename(); // 업로드되는 파일 이름
+            String basepath = servletContext.getRealPath("/"); //"D:\\dev\\projectupload"; // 서버 기본 경로 설정
+            String path = "coinfo\\" + cuserid; // 파일 경로 설정
+            String saveFileName = uuid.toString() + "_" + uploadFileName; // 저장할 파일 이름
 
-                ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
-        		//테이블 세팅
-                imgtb.setUsetb("coinfotb");	//관련테이블
-                imgtb.setGubun(cuserid+"_"+1);	//구분은 세션에서 가져옴
-                imgtb.setUuid(uuid.toString());
-                imgtb.setUploadpath(path);
-                imgtb.setFilename(uploadFileName);
-                imgservice.imgupload_resume(imgtb, file, basepath); //imgtb에 데이터 추가 및 해당 파일 저장
+            ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
+    		//테이블 세팅
+            imgtb.setUsetb("coinfotb");	//관련테이블
+            imgtb.setGubun(cuserid+"_"+1);	//구분은 세션에서 가져옴
+            imgtb.setUuid(uuid.toString());
+            imgtb.setUploadpath(path);
+            imgtb.setFilename(uploadFileName);
+            imgservice.imgupload_resume(imgtb, file, basepath); //imgtb에 데이터 추가 및 해당 파일 저장
 
-                // 파일 경로를 param에 추가
-                param.put("filePath", path + "\\" + saveFileName);
+            // 파일 경로를 param에 추가
+            param.put("filePath", path + "\\" + saveFileName);
         }
 
         service.insert(param);
@@ -115,13 +115,19 @@ public class CoinfotbController {
         
      // 파일 업로드
         if (!file.isEmpty()) {
-            UUID uuid = UUID.randomUUID(); // 중복 방지 랜덤 난수 생성
+        	ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
+        	imgtb.setUsetb("coinfotb");	//관련테이블
+            imgtb.setGubun(cuserid+"_"+1);	//구분은 세션에서 가져옴
+            
+            imgservice.imgdelete_coifno(imgtb);
+        	
+        	UUID uuid = UUID.randomUUID(); // 중복 방지 랜덤 난수 생성
             String uploadFileName = file.getOriginalFilename(); // 업로드되는 파일 이름
             String basepath = servletContext.getRealPath("/"); //"D:\\dev\\projectupload"; // 서버 기본 경로 설정
             String path = "coinfo\\" + cuserid; // 파일 경로 설정
             String saveFileName = uuid.toString() + "_" + uploadFileName; // 저장할 파일 이름
 
-            ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
+            //ImgtbDTO imgtb = new ImgtbDTO(); //이미지 정보 테이블
     		//테이블 세팅
             imgtb.setUsetb("coinfotb");	//관련테이블
             imgtb.setGubun(cuserid+"_"+1);	//구분은 세션에서 가져옴

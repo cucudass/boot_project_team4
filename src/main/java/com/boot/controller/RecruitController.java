@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.boot.dao.JobposttbDAO;
 import com.boot.dto.CareertbDTO;
+import com.boot.dto.CoinfotbDTO;
 import com.boot.dto.EdugbtbDTO;
 import com.boot.dto.JobposttbDTO;
 import com.boot.dto.WrktygbtbDTO;
 import com.boot.service.CareertbService;
+import com.boot.service.CoinfotbService;
 import com.boot.service.EdugbtbService;
 import com.boot.service.JobaplyService;
 import com.boot.service.RecruitService;
@@ -44,6 +46,9 @@ public class RecruitController {
 	
 	@Autowired
 	private JobaplyService jobaplyservice;
+	
+	@Autowired
+	private CoinfotbService coinfoservice;
 	
 	@RequestMapping("/recruitadd")
 	public String recruitadd(Model model) {
@@ -126,8 +131,12 @@ public class RecruitController {
 		log.info("@# jobno => "+ param.get("jobno"));
 		
 		JobposttbDTO jobinfoData = service.recruitinfo(param);
+		
+		CoinfotbDTO coinfo = coinfoservice.Coinfotbinfo(param);
+		
 		log.info("@# jobinfoData: " + jobinfoData);
 		model.addAttribute("jobinfoData", jobinfoData);
+		model.addAttribute("companyInfo", coinfo);
 		model.addAttribute("status", "cs");
 		
 		return "recruit/recruitinfo";

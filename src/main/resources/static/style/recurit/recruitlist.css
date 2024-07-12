@@ -67,6 +67,7 @@ nav ul li.user {
 
 /* 이력서 항목 스타일 */
 .resume-item, .resume-card {
+	white-space: nowrap;
     position: relative;
     display: flex;
     align-items: center;
@@ -89,6 +90,7 @@ nav ul li.user {
 }
 
 .resume-details {
+	white-space: nowrap;
     flex-grow: 1;
 }
 
@@ -115,8 +117,10 @@ nav ul li.user {
 
 /* 버튼 스타일 */
 .buttons {
+    white-space: nowrap;
     display: flex;
     gap: 10px;
+	margin-bottom: -110px;
 }
 
 button.edit, button.delete, button.view {

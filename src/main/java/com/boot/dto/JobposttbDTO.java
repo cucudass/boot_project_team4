@@ -69,4 +69,11 @@ public class JobposttbDTO {
 	private String propo;
 	private String proself;
 	private int prcnt;
+	
+	private int imgno;
+	private String usetb;
+	private String gubun;
+	private String uuid;
+	private String uploadpath;
+	private String filename;
 }

@@ -17,4 +17,13 @@ public class CoinfotbDTO {
 	private int emnum;			//사원수
 	private String binfo;		//사업내용
 	private Timestamp adate;	//등록 일자
+	
+	private String deptnm;
+	
+	private int imgno;
+	private String usetb;
+	private String gubun;
+	private String uuid;
+	private String uploadpath;
+	private String filename;
 }

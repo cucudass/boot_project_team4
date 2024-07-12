@@ -14,34 +14,45 @@
 <body>
 	<div class="container">
 	    <h1>이력서 선택</h1>
-	    <form id="resumeForm" name="resumeForm" method="post" action="jobaplysupport">
-	    	<input type="hidden" name="writer" value="${writer}">
-	    	<input type="hidden" name="csrno" value="${csrno}">
-	    	<input type="hidden" name="jobno" value="${jobno}">
-	    	<input type="hidden" id="prono" name="prono">
-	        <select id="resumelist" name="resume">
-	            <option value="">이력서를 선택하세요.</option>
-	            <c:forEach var="resume" items="${resumelist}">
-	                <option value="${resume.prono}">${resume.protitle}</option>
-	            </c:forEach>
-	        </select>
-	        <div class="apply-button">
-	            <button type="button" class="apply" onclick="applyResume();">지원하기</button>
-	            <%-- <button type="button" class="cancel" onclick="closePopup();">닫기</button> --%>
-	        </div>
-	    </form>
-	</div>
+	    <form id="resumeForm" name="resumeForm" method="post" action="/jobaplysupport">
+	        <input type="hidden" name="writer" value="${writer}">
+	        <input type="hidden" name="csrno" value="${csrno}">
+	        <input type="hidden" name="jobno" value="${jobno}">
+	        <input type="hidden" id="prono" name="prono">
+	        
+	        <c:forEach var="resume" items="${resumelist}" varStatus="loop">
+	            <div class="resume-item">
+	                <input type="checkbox" id="resume_${loop.index}" name="resume" value="${resume.prono}">
+	                <label for="resume_${loop.index}">
+	                    <a href="/resumedisplay?prono=${resume.prono}" target="_blank">${resume.protitle}</a>
+	                </label>
+	            </div>
+	        </c:forEach>
+				   
+		        <div class="apply-button">
+		            <button type="button" class="apply" onclick="applyResume();">지원하기</button>
+		        </div>
+		    </form>
+		</div>
+	
 	<script>
 		function applyResume() {
-	        var selectedResumeId = document.getElementById('resumelist').value;
-			alert("selectedResumeId: "+selectedResumeId);
-	        if (selectedResumeId) {
-	        	alert(1);
+			var chkbox = document.getElementsByName("resume");
+			var chkvalue = '';
+			for(var i=0; i<chkbox.length; i++) {
+				if(document.getElementsByName("resume")[i].checked == true) {
+					chkvalue = document.getElementsByName("resume")[i].value;
+					break;
+				}
+			}
+			
+	        //var selectedResumeId = document.getElementById('resumelist').value;
+	        //if (selectedResumeId) {
+	        if(chkvalue != '') {
 	            // 이력서 ID를 hidden input으로 추가
-				$("#prono").val(selectedResumeId);	
+				$("#prono").val(chkvalue);	
 	            // 폼 제출
 	            resumeForm.submit();
-	            alert(2);
 	            // 팝업 창 닫기
 	            //window.close();
 	            // 지원 완료 메시지 출력
@@ -50,10 +61,16 @@
 	            alert('이력서를 선택하세요.');
 	        }
 	    }
-
-		function closePopup() {
-		    window.close();
-		}
+		// 중복 체크 방지
+		document.querySelectorAll('input[name="resume"]').forEach(function(input) {
+		    input.addEventListener('change', function() {
+		        var checkedInputs = document.querySelectorAll('input[name="resume"]:checked');
+		        if (checkedInputs.length > 1) {
+		            this.checked = false; // 현재 체크된 것 취소
+		            alert('이미 선택된 이력서가 있습니다.');
+		        }
+		    });
+		});
     </script>
 </body>
 </html>

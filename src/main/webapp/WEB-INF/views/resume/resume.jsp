@@ -18,26 +18,15 @@
 			<input type="hidden" name="imgno" value="">
 			<div class="form-section">
         		<h3>이력서 제목</h3>
-        		<div class="form-container">
+        		<div class="form-container1">
         			<div class="input-container">
 	        			<input type="text" id="protitle" name="protitle" placeholder=" "  />
 	        			<label for="protitle">제목 <span class="c-r">*</span></label>
 	        		</div>
-	        		<div class="input-container">
-	        			<input type="text" id="nameInput1" name="prstitle" placeholder=" "  />
-						<label for="protitle">소제목</label>
-	        		</div>
 	        	</div>
-	        	<div class="form-section">
+	        	<div class="form-section1">
                     <div class="photo-preview" id="photoPreview">
                         <!-- 선택한 사진 미리보기 영역 -->
-                    </div>
-	        		<div class="input-container">
-	        			<textarea class="fixed-size-textarea" name="prsself" placeholder="간략한 소개글..."></textarea>
-	        		</div>
-                    <div class="photo-upload">
-                        <label for="photo">사진 추가</label>
-                        <input type="file" id="photo" name="imgfile" accept="image/*" />
                     </div>
         		</div>
         	</div>
@@ -62,6 +51,10 @@
                     <div class="input-container email">
                         <input type="text" id="email" name="email" placeholder=" " required value="${userlist.email }" />
                         <label for="email">이메일 <span class="c-r">*</span></label>
+                    </div>
+                    <div class="photo-upload">
+                        <label for="photo">사진 추가</label>
+                        <input type="file" id="photo" name="imgfile" accept="image/*" />
                     </div>
                 </div>
 
@@ -160,6 +153,10 @@
                         </select>
                     </div>
                 </div>
+                <div class="input-container">
+                	<h3>포트폴리오</h3>
+	        			<input type="text" id="propo" name="propo" placeholder="git주소 및 url등록해주세요"  />
+	        		</div>
                 <div class="form-section">
         		<h3>자기소개서</h3>
         		<div class="form-container">

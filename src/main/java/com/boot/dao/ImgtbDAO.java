@@ -15,4 +15,5 @@ public interface ImgtbDAO {
 	public void imgupload_resume(ImgtbDTO imgtbdto);
 	public ImgtbDTO imgdata(ImgtbDTO imgtbdto);
 	public void deleteImgdata(ImgtbDTO imgtbdto);
+	public void deleteImgdata_coinfo(ImgtbDTO imgtbdto);
 }

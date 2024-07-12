@@ -44,6 +44,11 @@
     	where imgno = #{imgno} and usetb = #{usetb} and gubun = #{gubun}
     </delete>
     
+    <delete id="deleteImgdata_coinfo">
+    	delete from imgtb
+    	where usetb = #{usetb} and gubun = #{gubun}
+    </delete>
+    
 </mapper>
 
 

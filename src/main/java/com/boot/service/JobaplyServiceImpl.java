@@ -49,8 +49,8 @@ public class JobaplyServiceImpl implements JobaplyService{
 	@Override
 	public void jobaply_prcnt(HashMap<String, String> param) {
 		JobaplytbDAO dao = sqlSession.getMapper(JobaplytbDAO.class);
-		dao.jobaply_prcnt(param);
 		
+		dao.jobaply_prcnt(param);
 	}
 
 	@Override

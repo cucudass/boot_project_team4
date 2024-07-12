@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.boot.dto.CoinfotbDTO;
 import com.boot.dto.JobposttbDTO;
+import com.boot.service.CoinfotbService;
 import com.boot.service.JobaplyService;
 import com.boot.service.RecruitService;
 
@@ -26,6 +28,8 @@ public class MainController {
 	@Autowired
 	private JobaplyService jobaplyservice;
 	
+	@Autowired
+	private CoinfotbService coinfoservice;
 	
 	@RequestMapping("/recruitshowform")
 	public String recruitshowform(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
@@ -40,6 +44,8 @@ public class MainController {
 		
 		JobposttbDTO jobinfoData = service.recruitinfo(param);
 		log.info("@# jobinfoData: " + jobinfoData);
+		
+		CoinfotbDTO coinfo = coinfoservice.Coinfotbinfo(param);
 		
 		if(usergubun == null) usergubun = "p";
 		
@@ -60,6 +66,7 @@ public class MainController {
 		}
 		
 		model.addAttribute("jobinfoData", jobinfoData);
+		model.addAttribute("companyInfo", coinfo);
 		model.addAttribute("status", gubun);
 		
 		return "recruit/recruitinfo";

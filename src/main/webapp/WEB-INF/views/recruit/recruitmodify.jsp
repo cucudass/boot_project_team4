@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <html lang="en">
@@ -91,6 +92,10 @@
                 <div class="card">
                     <p>접수 기간 및 방법 :</p>
                     <textarea name="pamoa">${recruitlist.pamoa }</textarea>
+					<label for="ddate">마감일자<span>*</span></label>
+					<fmt:formatDate value= "${recruitlist.ddate }" pattern="yyyy-MM-dd" var="dateValue"/>
+					<input type="date" id="ddate" name="ddate" value="${dateValue}" style="width: 120px;"/>
+                    <p>모집 인원 : <input type="text" name="recno" value="${recruitlist.recno}" style="width: 50px;"></p>
                     <p>채용 절차 :</p>
                     <textarea name="rcmpcd">${recruitlist.rcmpcd }</textarea>
                 </div>

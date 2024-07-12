@@ -24,19 +24,27 @@
 				</td>
 				<td width="20%;">${jobs.jobtitle }</td>
 				<td width="20%;">연봉: 회사규내에 따름</td>
-				<td width="20%;" rowspan="2" align="center"><font color="red">D-${jobs.daycha }</font></td>
+				<c:if test="${jobs.daycha > 0}">
+					<td width="20%;" rowspan="2" align="center"><font color="red">D-${jobs.daycha }</font></td>
+					
+				</c:if>
+				<c:if test="${jobs.daycha <= 0}">
+					<td width="20%;" rowspan="2" align="center"><font color="red">마감되었습니다.</font></td>
+				</c:if>
 			</tr>
 			<tr>
 				<td rowspan="2">담당업무: ${jobs.position }</td>
 				<td rowspan="3" style="border-bottom: 1px solid #ccc;">${jobs.wrktm }</td>
 			</tr>
 			<tr>
-				<td align="center">24/06/13 등록</td>
+				<fmt:formatDate value="${jobs.adate }" pattern="yy/MM/dd" var="adate"/>
+				<td align="center">${adate } 등록</td>
 			</tr>
 			<tr>
 				<td style="border-bottom: 1px solid #ccc;">${jobs.careernm } | ${jobs.edunm }</td>
 				<%-- <td style="border-bottom: 1px solid #ccc;">09:00~18:00</td> --%>
-				<td style="border-bottom: 1px solid #ccc;" align="center">24/08/12 마감</td>
+				<fmt:formatDate value="${jobs.ddate }" pattern="yy/MM/dd" var="ddate"/>
+				<td style="border-bottom: 1px solid #ccc;" align="center">${ddate } 마감</td>
 			</tr>
 		</c:forEach>
 	</table>

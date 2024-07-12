@@ -38,9 +38,10 @@
 	                <div class="resume-item">
 	                    <div class="resume-details">
 	                        <p id="title" onclick="viewRecruitInfo('${dto.csrno}', '${dto.jobno}')">${dto.jobtitle}</p><br>
-	                        <p id="subtitle">${dto.jobsubtitle}</p><br>
+	                        <p id="subtitle">${dto.jobsubtitle}</p><br><br>
 	                        <fmt:formatDate value="${dto.adate}" pattern="yyyy-MM-dd" var="dateValue"/>
-	                        <p id="adate" name="adate">공고등록일 : ${dateValue}</p><br>
+	                        <fmt:formatDate value="${dto.ddate}" pattern="yyyy-MM-dd" var="dateValue2"/>
+	                        <p id="adate" name="adate">공고등록일 : ${dateValue} & 마감일 : ${dateValue2}</p>
 	                    </div>
 	                    <div class="buttons">
 	                        <button class="view" type="button" onclick="viewItem('${dto.csrno}', '${dto.jobno}')">지원자 지원 내역 보기</button>

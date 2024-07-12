@@ -292,4 +292,9 @@ public class ResumeController {
         
         return "resume/resumePopup"; // 실제 JSP 파일 경로에 맞게 설정
     }
+	
+	@RequestMapping("return_list")
+	public String return_list() {
+		return "redirect:resumelist";
+	}
 }

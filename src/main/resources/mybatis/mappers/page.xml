@@ -4,9 +4,9 @@
 
 <mapper namespace="com.boot.dao.PageDAO">
 	<sql id="criteria">
-<!-- 	1번 방법 -->
-<!--		<if test="type == 'T'.toString()">-->
-<!-- 	2번 방법 -->
+		<if test='type == "TCW"'>
+        	where title like concat('%', #{keyword}, '%') or content like concat('%', #{keyword}, '%') or authorid like concat('%', #{keyword}, '%')
+      	</if>
 		<if test='type == "T"'>
 			where title like concat('%', #{keyword}, '%')
 		</if>

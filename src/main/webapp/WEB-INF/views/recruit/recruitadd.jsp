@@ -89,8 +89,7 @@
                     <textarea name="pamoa">잡코리아 온라인이력서 제출</textarea>
                     <label for="ddate">마감일자<span>*</span></label>
 					<input type="date" id="ddate" name="ddate" style="width: 120px;"/>
-					<p>모집 인원</p>
-					<input type="text" name="recno" style="width: 120px;"/>
+					<p>모집 인원 : <input type="text" name="recno" style="width: 50px;"></p>
                     <p>채용 절차 :</p>
                     <textarea name="rcmpcd">서류전형>인성검사>면접>최종합격</textarea>
                 </div>

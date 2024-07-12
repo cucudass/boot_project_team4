@@ -14,7 +14,7 @@ searchbox.addEventListener('mouseover', ()=> {
 });
 
 //각 항목에서의 선택한 아이템
-const job = document.getElementById('job');
+//const job = document.getElementById('job');
 const loc = document.getElementById('loc');
 const career = document.getElementById('career');
 const edu = document.getElementById('edu');
@@ -26,7 +26,7 @@ function showsearchBox(event) {
 		searchbox.classList.add("box-show");
 	}
 }
-job.addEventListener('click', showsearchBox);
+//job.addEventListener('click', showsearchBox);
 loc.addEventListener('click', showsearchBox);
 career.addEventListener('click', showsearchBox);
 edu.addEventListener('click', showsearchBox);
@@ -83,8 +83,7 @@ function addItemToSearchBox(id, value, text) {
 items.forEach(function(item) {
 	item.addEventListener('click', function(){
 		const text = item.textContent;
-		const value = item.value;
-		alert("value: "+value);
+		const value = item.getAttribute('value');
 		const id = $(this).closest('ul').attr('id');
 		addItemToSearchBox(id, value, text);
 	});

@@ -37,7 +37,7 @@ header {
 
 .container {
 	white-space: nowrap;
-    width: 1000px;
+    width: 80%;
     margin: 20px auto;
     background-color: #ffffff;
     padding: 20px;
@@ -64,7 +64,7 @@ h1 {
 
 .tabs {
     display: flex;
-	align-items: center;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 20px;
 }

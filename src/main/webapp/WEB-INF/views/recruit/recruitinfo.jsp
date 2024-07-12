@@ -77,6 +77,7 @@
 						<td>
 							<strong>담당업무:</strong> ${jobinfoData.position}
 						</td>
+						<td></td>
 						<td>
 							<strong>스킬:</strong> ${jobinfoData.skills}
 						</td>
@@ -93,6 +94,7 @@
 				                    <c:otherwise>미정</c:otherwise>
 				                </c:choose>
 						</td>
+						<td></td>
 						<td>
 							<strong>학력:</strong>
 				                <c:choose>
@@ -115,10 +117,11 @@
 				                    <c:otherwise>미정</c:otherwise>
 				                </c:choose>
 						</td>
+						<td></td>
 						<td>
 							<strong>급여:</strong>
 							    <c:choose>
-							        <c:when test="${empty jobinfoData.salary}">
+							        <c:when test="${jobinfoData.salary == 0}">
 							            회사 내규에 따름 - 면접 후 결정
 							        </c:when>
 							        <c:otherwise>
@@ -131,6 +134,7 @@
 						<td>
 							<strong>근무 지역:</strong> ${jobinfoData.loc01}
 						</td>
+						<td></td>
 						<td>
 							<strong>근무 요일/시간:</strong> ${jobinfoData.wrktm}
 						</td>
@@ -193,7 +197,9 @@
 						</c:choose>
 					</li>
 					<li>${jobinfoData.duties}</li><br>
-					<p><strong>우대 조건</strong></p>
+				</ul>
+				<p><strong>우대 조건</strong></p>
+				<ul>
 					<li>${jobinfoData.pfntcd}</li>
 				</ul>
             </div>
@@ -268,7 +274,12 @@
 				<table class="company-info-left">
 					<tr>
 						<td>
-							<img src = "${pageContext.request.contextPath}/resources/img/modelS.jpg">
+							<c:if test="${empty companyInfo.imgno }">
+                           		<img src="../../../resources/img/company.jpg" style="width: 250px; height: 165px;">
+                           	</c:if>
+                           	<c:if test="${not empty companyInfo.imgno }">
+								<img src="show_coinfo_img?writer=${companyInfo.cuserid}&imgno=t&imggubun=b" style="width: 250px; height: 165px;">
+							</c:if>
 						</td>
 						<td>
 							<table class="company-info-right">
@@ -279,22 +290,22 @@
 								</tr>
 								<tr>
 									<td>
-										<strong>기업명:</strong> ${companyInfo.dptno}
+										<strong>기업명:</strong> ${companyInfo.cusnm}
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<strong>대표자:</strong> ${companyInfo.dptno}
+										<strong>대표자:</strong> ${companyInfo.bossnm}
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<strong>업종:</strong> ${companyInfo.dptno}
+										<strong>업종:</strong> ${companyInfo.deptnm}
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<strong>사원수:</strong> ${companyInfo.loc01}
+										<strong>사원수:</strong> ${companyInfo.emnum} 명
 									</td>
 								</tr>
 							</table>

@@ -92,11 +92,11 @@ public class ImgtbServiceImpl implements ImgtbService {
 
 	@Override
 	public void imgdelete_resume(ImgtbDTO imgtbdto) {
-		log.info("@# ImgtbServiceImpl img_delete");
+		log.info("@# ImgtbServiceImpl imgdelete_resume");
 		
 		ImgtbDAO dao = sqlsession.getMapper(ImgtbDAO.class);
 		
-		ImgtbDTO dto = dao.imgdata(imgtbdto); //키를 이용해서 해당 이미지파일 DB 조회
+		ImgtbDTO dto = dao.imgdata(imgtbdto); //imgno를 제외한 키를 이용해서 해당 이미지파일 DB 조회
 		
 		String filename = dto.getUuid() + "_" + dto.getFilename();
 		
@@ -136,8 +136,6 @@ public class ImgtbServiceImpl implements ImgtbService {
 		} finally {
 		    // file 객체의 리소스 해제 등을 위해 필요한 코드 추가
 		}
-		
-		
 	}
 
 	@Override
@@ -146,5 +144,54 @@ public class ImgtbServiceImpl implements ImgtbService {
 
 		ImgtbDAO dao = sqlsession.getMapper(ImgtbDAO.class);
 		return dao.getFile_coinfo_select(param);
+	}
+
+	@Override
+	public void imgdelete_coifno(ImgtbDTO imgtbdto) {
+		log.info("@# ImgtbServiceImpl imgdelete_coifno");
+		
+		ImgtbDAO dao = sqlsession.getMapper(ImgtbDAO.class);
+		
+		ImgtbDTO dto = dao.imgdata(imgtbdto); //imgno를 제외한 키를 이용해서 해당 이미지파일 DB 조회
+		if(dto != null) {
+			String filename = dto.getUuid() + "_" + dto.getFilename();
+			
+			File file = null;
+			try {
+				log.info("@# servlet_realPath => "+servletContext.getRealPath("/"));
+				log.info("@# getUploadpath => "+dto.getUploadpath());
+				log.info("@# filename  => "+URLDecoder.decode(filename, "UTF-8"));
+				file = new File(servletContext.getRealPath("/")+dto.getUploadpath()+"/"+URLDecoder.decode(filename, "UTF-8"));
+				log.info("@# file =>" + file);
+				boolean filedelete = file.delete();
+				
+				if(filedelete) {
+					log.info("파일 삭제 성공");
+				} else {
+					log.info("파일 삭제 실패");
+				}
+	
+				//String largeFileName = file.getAbsolutePath().replace("s_", "");
+				//log.info("@# largeFileName=>"+largeFileName);
+				
+				file = new File(servletContext.getRealPath("/")+dto.getUploadpath()+"/s_"+URLDecoder.decode(filename, "UTF-8")); //new File(largeFileName);
+				filedelete = file.delete();
+				
+				if(filedelete) {
+					log.info("s_파일 삭제 성공");
+				} else {
+					log.info("s_파일 삭제 실패");
+				}
+				dao.deleteImgdata_coinfo(imgtbdto);
+			} catch (UnsupportedEncodingException e) {
+			    log.error("파일명 디코딩 오류: " + e.getMessage());
+			} catch (SecurityException e) {
+			    log.error("파일 접근 권한 오류: " + e.getMessage());
+			} catch (Exception e) {
+			    log.error("파일 삭제 중 오류 발생: " + e.getMessage());
+			} finally {
+			    // file 객체의 리소스 해제 등을 위해 필요한 코드 추가
+			}
+		}
 	}
 }
