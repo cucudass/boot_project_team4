@@ -14,12 +14,15 @@ body {
 
 .navbar {
     display: flex;
+    /* grid-template-columns: 1fr 1fr; */
     justify-content: space-between;
     align-items: center;
     background-color: rgb(255, 255, 255);
-    padding: 10px 20px;
+    padding: 10px 0px;
     border-bottom: 1px solid #ddd;
     white-space: nowrap;
+    width: 100%;
+    min-width: 1480px;
     height: 60px;
 }
 
@@ -28,11 +31,14 @@ body {
     align-items: center;
     font-weight: bold;
     margin-right: 10px;
+    z-index: 3;
 }
 
 .navbar-right {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
+    padding: 0px 20px;
 }
 
 .navbar-left h1 {
@@ -64,6 +70,7 @@ body {
     cursor: pointer;
     border-radius: 5px;
     white-space: nowrap;
+    font-family: GmarketSansMedium;
 }
 
 .navbar-left img{
@@ -118,4 +125,8 @@ button a {
 
 .content-dropdown a:hover {
     background-color: #f1f1f1; /* 링크에 마우스를 올리면 배경색을 연한 회색으로 변경 */
+}
+
+.sessionTimeout {
+	font-size: 0.5em;
 }

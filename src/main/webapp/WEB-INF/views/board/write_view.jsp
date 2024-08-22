@@ -6,9 +6,6 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/board/write_view.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/js/header/header.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/js/footer/footer.css">
-
 	<script>
 		function fn_submit(){
 			//form 요소 자체
@@ -32,37 +29,34 @@
 <jsp:include page="../../header.jsp"/>
 <body>
 	<div class="container">
-	<h2>게시판 글 작성</h2>
-	<div class="button-container">
-		<button class="listbutton"><a href="list">목록보기</a></button>
-    </div>
-	<table>
-		<form id="frm" method="post" action="write">
-		<%-- 
-			<tr>
-				<td class="table_td">이름</td>
-				<td>
-					<input type="text" name="authorid" size="50">
-				</td>
-			</tr>
-		--%>
-			<tr>
-				<td class="table_td">제목</td>
-				<td>
-					<input type="text" name="title" size="50">
-				</td>
-			</tr>
-			<tr>
-				<td class="table_td">내용</td>
-				<td>
-					<textarea rows="10" name="content"></textarea>
-				</td>
-			</tr>
-		</form>
-	</table>
-		<div class="button-container-bottom">
-	        <button type="button" class="submitbutton" onclick="fn_submit()">작성완료</button>
+		
+		<h2>게시판 글 작성</h2>
+		
+		<div class="button-container">
+			<a href="list"><button class="listbutton">목록보기</button></a>
 	    </div>
+		
+		<table>
+			<form id="frm" method="post" action="write">
+				<tr class="first">
+					<td class="table_td">제목</td>
+					<td>
+						<input type="text" name="title" size="50">
+					</td>
+				</tr>
+				<tr class="second">
+					<td class="table_td">내용</td>
+					<td>
+						<textarea rows="10" name="content"></textarea>
+					</td>
+				</tr>
+		
+			</form>
+		</table>
+				<div class="button-container-bottom">
+			        <button type="button" class="submitbutton" onclick="fn_submit()">작성완료</button>
+			    </div>
+
 	</div>
 </body>
 </html>

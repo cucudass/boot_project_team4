@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -163,8 +164,27 @@ public class JobpostController {
 		log.info("@# main");
 		
 		ArrayList<JobposttbDTO> list = service.mainlist();
+		ArrayList<JobposttbDTO> allList = service.mainAllList();
+		
+		model.addAttribute("mainAllList", allList);
 		model.addAttribute("main", list);
 		
 		return "main";
+	}
+	
+	@RequestMapping("/rviewrecruitlist")
+	public String rviewrecruitlist(@RequestParam HashMap<String, String> param, Criteria cri, Model model) {
+		log.info("@# rviewrecruitlist");
+		
+		List<JobposttbDTO> list = service.rviewrecruitlist(param);
+		
+		param.put("pageNum", cri.getPageNum() + "");
+		param.put("amount", cri.getAmount() + "");
+		int total = service.getTotalCount(param);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pageMaker", new PageDTO(total, cri));
+		
+		return "rview/rviewrecruitlist";
 	}
 }

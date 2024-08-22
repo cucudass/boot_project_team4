@@ -12,7 +12,7 @@ public class ResumetbDTO {
 	private String protitle;
 	private String prstitle;
 	private String pname;
-	private int gendr;	
+	private int gender;	
 	private Date birdy;	
 	private String imgcd;
 	private String email;
@@ -45,4 +45,12 @@ public class ResumetbDTO {
 	private String uploadpath;
 	
 	private int rn;
+	private boolean representative;
+	
+	private String job;
+	
+	private String skillnos;
+	private String skillnms;
+	
+	private int cnt;
 }

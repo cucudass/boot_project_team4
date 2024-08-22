@@ -13,29 +13,33 @@
 <jsp:include page="../../header.jsp"/>
     <div class="container">
         <section class="resume-management">
-            <div id="titleDiv">
+			<div id="titleDiv">
                 <span id="title">이력서 관리</span>
-            </div>
-            <div id="addButtonDiv" class="resume-card">
-                <span class="f-s-b" id="addResumeButton"> + 새 이력서 등록하기 </span>
+            	<hr>
+				<div id="addButtonDiv" class="resume-card">
+                   <a id="addResumeButton" class="f-s-b"> + 등록하기 </a>
+				</div>
             </div>
             <form method="get" id="resumefrm" name="resumefrm">
             	<input type="hidden" id="prono" name="prono">
 				<input type="hidden" id="imgno" name="imgno">
             	<div class="resumes">
 					<c:forEach items="${resumelist}" var="dto">
-						<div class="resume-card">
-							<div>
-								<img src="/display_img_show?prono=${dto.prono }&imgno=${dto.imgno}">
-							</div>
-							<p class="f-s-b">
-								<td><a href="/resumedisplay?prono=${dto.prono }">${dto.protitle}</a></td><br>
-							</p>
-							<div class="buttons">
-								<button type="button" class="update" onclick="update_resume('${dto.prono}', '${dto.imgno}');">수정</button>
-								<button type="button" class="delete" onclick="delete_resume('${dto.prono}', '${dto.imgno}');">삭제</button>
-		                    </div>
-						</div>
+						<div class="resume-card" data-representative="${dto.representative ? 'true' : 'false'}">
+                            <div>
+                                <img class="resume-image" src="/display_img_show?prono=${dto.prono }&imgno=${dto.imgno}">
+                            </div>
+                            <p class="f-s-b">
+                                <a href="/resumedisplay?prono=${dto.prono }">${dto.protitle}</a><br>
+                            </p>
+                            <div class="buttons">
+                                <div class="top-buttons">
+                                    <button type="button" class="update" onclick="update_resume('${dto.prono}', '${dto.imgno}');">&#9998;</button>
+                                    <button type="button" class="delete" onclick="confirmDelete('${dto.prono}', '${dto.imgno}');">X</button>
+                                </div>
+                                <button type="button" class="set-representative" onclick="setRepresentative('${dto.prono}', '${dto.imgno}');">&#10004;</button>
+                            </div>
+                        </div>
 					</c:forEach>
 				</div>
 			</form>

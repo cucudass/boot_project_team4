@@ -13,4 +13,11 @@ public class PusertbDTO {
 	private String phone;
 	private Timestamp adate;
 	private Timestamp mdate;
+	
+	private int boardcnt; 
+	private int jobaplycnt; 
+	private int jobaplylistcnt;
+	private int callcnt;
+	private int opencnt;
+	private int offercnt;
 }

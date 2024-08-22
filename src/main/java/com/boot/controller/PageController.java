@@ -3,6 +3,8 @@ package com.boot.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +37,49 @@ public class PageController {
 	
 //	@RequestMapping("/listWithPaging")
 	@RequestMapping("/list")
-	public String listWithPaging(Criteria cri, Model model) {
+	public String listWithPaging(@RequestParam HashMap<String, String> param, Criteria cri, Model model) {
 		log.info("@# list");
-		log.info("@# cri=>"+cri);
+		log.info("@# param=>"+param);
+		log.info("@# mypost => " + param.get("mypost"));
+
+		ArrayList<BoardtbDTO> list = null;
+		String sortOrder = param.get("sortOrder");
+		log.info("sortOrder: " + sortOrder);
+        if (sortOrder != null) {
+            switch (sortOrder) {
+                case "views_desc":
+                    cri.setSort("views");
+                    cri.setOrder("DESC");
+                    break;
+                case "views_asc":
+                    cri.setSort("views");
+                    cri.setOrder("ASC");
+                    break;
+                case "date_desc":
+                    cri.setSort("date");
+                    cri.setOrder("DESC");
+                    break;
+                case "date_asc":
+                    cri.setSort("date");
+                    cri.setOrder("ASC");
+                    break;
+            }
+        } else {
+            cri.setSort("date");
+            cri.setOrder("DESC");
+        }
 		
-		ArrayList<BoardtbDTO> list = service.listWithPaging(cri);
+        cri.setType(param.get("type"));
+		cri.setKeyword(param.get("keyword"));
+        
+		String mypost = param.get("mypost");
+		log.info("@# mypost =>" +  mypost);
+		if(mypost == null || !mypost.equals("my")) {
+			list = service.listWithPaging(cri); //일반 검색
+		} else {
+			list = service.listWithPaging_writer(cri); //작성자 기준 검색
+			
+		}
 //		int total = service.getTotalCount();
 		int total = service.getTotalCount(cri);
 		log.info("@# total=>"+total);
@@ -47,12 +87,13 @@ public class PageController {
 		model.addAttribute("list", list);
 //		model.addAttribute("pageMaker", new PageDTO(123, cri));
 		model.addAttribute("pageMaker", new PageDTO(total, cri));
+		model.addAttribute("sortOrder", sortOrder);
 		
 		return "board/list";
 	}
 	
 	@RequestMapping("/content_view")
-	public String content_view(@RequestParam HashMap<String, String> param, Model model) {
+	public String content_view(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
 		log.info("@# content_view");
 		
 		boardservice.upHit(param);
@@ -66,6 +107,7 @@ public class PageController {
 		// 해당 게시글에 작성된 댓글 리스트를 가져옴
 		ArrayList<CommenttbDTO> commentList = commentService.findAll(param);
 		model.addAttribute("commentList", commentList);
+		model.addAttribute("userid", (String)session.getAttribute("id"));
 		
 		return "board/content_view";
 	}

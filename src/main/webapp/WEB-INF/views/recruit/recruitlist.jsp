@@ -30,10 +30,10 @@
 	        <section class="resume-management">
 	            <h2>모집공고 관리</h2>
 	            <div id="addButtonDiv" class="resume-card">
-	                <div class="resume-details">
-	                    <span class="f-s-b" id="addResumeButton" onclick="addRecruit()"> + 새 모집공고 등록 </span>
-	                </div>
-	            </div>
+                   <div class="resume-details" onclick="addRecruit()">
+                       <span class="f-s-b" id="addResumeButton" > + 새 모집공고 등록 </span>
+                   </div>
+               </div>
 	            <c:forEach items="${list}" var="dto">
 	                <div class="resume-item">
 	                    <div class="resume-details">
@@ -44,10 +44,12 @@
 	                        <p id="adate" name="adate">공고등록일 : ${dateValue} & 마감일 : ${dateValue2}</p>
 	                    </div>
 	                    <div class="buttons">
-	                        <button class="view" type="button" onclick="viewItem('${dto.csrno}', '${dto.jobno}')">지원자 지원 내역 보기</button>
-	                        <button class="edit" type="button" onclick="ModifyItem('${dto.csrno}', '${dto.jobno}')">수정 하기</button>
-	                        <button class="delete" type="button" onclick="deleteItem('${dto.csrno}', '${dto.jobno}')">삭제</button>
-	                    </div>
+						    <button class="view" type="button" onclick="viewItem('${dto.csrno}', '${dto.jobno}')">지원자 지원 내역 보기</button>
+						    <div class="icon-buttons">
+						        <span class="edit" onclick="ModifyItem('${dto.csrno}', '${dto.jobno}')">&#9998;</span>
+						        <span class="delete" onclick="deleteItem('${dto.csrno}', '${dto.jobno}')">x</span>
+						    </div>
+						</div>
 	                </div>
 	            </c:forEach>
 	        </section>

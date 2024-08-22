@@ -16,9 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.boot.dto.CoinfotbDTO;
+import com.boot.dto.CusertbDTO;
 import com.boot.dto.ImgtbDTO;
 import com.boot.dto.SectortbDTO;
 import com.boot.service.CoinfotbService;
+import com.boot.service.CusertbService;
 import com.boot.service.ImgtbService;
 import com.boot.service.SectortbService;
 
@@ -40,12 +42,17 @@ public class CoinfotbController {
     @Autowired
     private ServletContext servletContext; //ServletContext 주입
     
+    @Autowired
+    private CusertbService cuserservice;
+    
     @RequestMapping("/coinfo")
     public String coinfo(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
         log.info("@# coinfo");
         String imgno = null;
         String cuserid = (String) session.getAttribute("id");
         param.put("cuserid", cuserid);
+        
+        CusertbDTO cuser = cuserservice.CInfoView(param);
         
         CoinfotbDTO dto = service.Coinfotblist(param);
         model.addAttribute("coinfotb", dto);
@@ -64,6 +71,7 @@ public class CoinfotbController {
         else imgno = "n";
         
         model.addAttribute("imgno", imgno);
+        model.addAttribute("cuser", cuser);
         
         return "coinfo/coinfo";
     }
@@ -74,6 +82,11 @@ public class CoinfotbController {
 
         String cuserid = (String) session.getAttribute("id");
         param.put("cuserid", cuserid);
+        
+        // csrno 값이 없을 경우 적절한 정수값 설정 (예: 기본값 0, 혹은 자동 증가 값)
+        if (param.get("csrno") == null || param.get("csrno").isEmpty()) {
+            param.put("csrno", "1"); // 예시로 기본값 0을 설정
+        }
         
         // 파일 업로드
         if (!file.isEmpty()) {
@@ -103,13 +116,18 @@ public class CoinfotbController {
         return "redirect:/coinfo";
     }
     
-    @RequestMapping("/Coinmodify")
+    @RequestMapping("/coinmodify")
     public String Coinmodify(@RequestParam HashMap<String, String> param, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes, HttpSession session) {
-        log.info("@# Coinmodify");
+        log.info("@# coinmodify");
 
         String cuserid = (String) session.getAttribute("id");
         param.put("cuserid", cuserid);
-
+        
+        // csrno 값이 없을 경우 기본값 설정 (이 부분은 실제 요구 사항에 맞게 조정)
+        if (param.get("csrno") == null || param.get("csrno").isEmpty()) {
+            param.put("csrno", "1"); // 예시로 기본값 0을 설정
+        }
+        
         service.Coinmodify(param);
         log.info("@# Coinmodify param => " + param);
         
@@ -142,5 +160,44 @@ public class CoinfotbController {
         
         redirectAttributes.addFlashAttribute("message", "기업정보수정이 완료되었습니다.");
         return "redirect:/coinfo";
+    }
+    
+    @RequestMapping("/coinfoshow")
+    public String coinfoshow(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
+        log.info("@# coinfoshow");
+        
+        String imgno = null;
+        String cuserid = null; //(String) session.getAttribute("id");
+        String gubun = param.get("gubun");
+        gubun = gubun == null ? "self":gubun;
+        if (gubun.equals("self")) {
+        	cuserid = (String) session.getAttribute("id");
+        }else {
+        	cuserid = param.get("writer");
+        }
+        
+        param.put("cuserid", cuserid);
+        
+        CusertbDTO cuser = cuserservice.CInfoView(param);
+        CoinfotbDTO dto = service.Coinfotblist(param);
+        ArrayList<SectortbDTO> sector = sectorservice.Sectortblist();
+        
+        model.addAttribute("coinfotb", dto);
+        model.addAttribute("sector", sector);
+        model.addAttribute("cuser", cuser);
+        
+        // 이미지 정보 가져오기
+        param.put("usetb", "coinfotb");
+        param.put("gubun", cuserid+"_"+1);
+        ImgtbDTO imgDto = imgservice.getFile_coinfo_select(param);
+        model.addAttribute("imgtb", imgDto);
+        
+        
+        if(imgDto != null) imgno = "t";
+        else imgno = "n";
+        
+        model.addAttribute("imgno", imgno);
+        
+        return "coinfo/coinfoshow";
     }
 }

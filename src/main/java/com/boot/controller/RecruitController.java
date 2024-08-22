@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -18,12 +19,18 @@ import com.boot.dto.CareertbDTO;
 import com.boot.dto.CoinfotbDTO;
 import com.boot.dto.EdugbtbDTO;
 import com.boot.dto.JobposttbDTO;
+import com.boot.dto.ScribetbDTO;
+import com.boot.dto.ShowskilltbDTO;
+import com.boot.dto.SkilltbDTO;
 import com.boot.dto.WrktygbtbDTO;
 import com.boot.service.CareertbService;
 import com.boot.service.CoinfotbService;
 import com.boot.service.EdugbtbService;
 import com.boot.service.JobaplyService;
 import com.boot.service.RecruitService;
+import com.boot.service.ScribeService;
+import com.boot.service.ShowskillService;
+import com.boot.service.SkilltbService;
 import com.boot.service.WrktygbtbService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +56,15 @@ public class RecruitController {
 	
 	@Autowired
 	private CoinfotbService coinfoservice;
+	
+	@Autowired
+	private ScribeService scribeservice;
+	
+	@Autowired
+    private ShowskillService showskillservice;
+    
+    @Autowired
+    private SkilltbService skillservice;
 	
 	@RequestMapping("/recruitadd")
 	public String recruitadd(Model model) {
@@ -94,7 +110,7 @@ public class RecruitController {
 
 	@RequestMapping("/recruitinsert")
 	public String recruitadd(@RequestParam HashMap<String, String> param, Model model, HttpSession session, String defaultValue) {
-		log.info("@# recruitadd");
+		log.info("@# recruitinsert");
 		
 		String cuserid = (String) session.getAttribute("id");
 		
@@ -123,7 +139,7 @@ public class RecruitController {
 		log.info("@# recruitshow");
 
 		String cuserid = (String)session.getAttribute("id");
-		
+		String usergubun = (String)session.getAttribute("usergubun");
 		param.put("cuserid", cuserid);
 		
 		log.info("@# cuserid => "+ cuserid);
@@ -138,6 +154,17 @@ public class RecruitController {
 		model.addAttribute("jobinfoData", jobinfoData);
 		model.addAttribute("companyInfo", coinfo);
 		model.addAttribute("status", "cs");
+		model.addAttribute("usergubun", usergubun);
+		model.addAttribute("minileft", "F");
+		
+		log.info("@# gender : " + jobaplyservice.getGenderStatistics(param));
+		model.addAttribute("genderStats", jobaplyservice.getGenderStatistics(param));
+		
+		log.info("@# gender : " + jobaplyservice.getAgeStatistics(param));
+		model.addAttribute("ageStats", jobaplyservice.getAgeStatistics(param));
+		
+		log.info("@# gender : " + jobaplyservice.getEducationStatistics(param));
+		model.addAttribute("educationStats", jobaplyservice.getEducationStatistics(param));
 		
 		return "recruit/recruitinfo";
 	}
@@ -198,18 +225,53 @@ public class RecruitController {
 		log.info("@# recruitshow_p");
 
 		String puserid = (String)session.getAttribute("id");
+		String usergubun = (String)session.getAttribute("usergubun");
+		ScribetbDTO scribe = null;
 		
 		param.put("puserid", puserid);
+		
+		//로그인 했을 시, 일반 유저 기준
+		if(puserid != null && usergubun.equals("p")) {
+			log.info("@# param => "+param);
+			param.put("writer", param.get("cuserid"));
+			scribe = scribeservice.scribe_p_select(param);
+			log.info("@# scribe=> "+scribe);
+		}
 		
 		log.info("@# cuserid => "+ puserid);
 		log.info("@# csrno => "+ param.get("csrno"));
 		log.info("@# jobno => "+ param.get("jobno"));
 		
 		JobposttbDTO jobinfoData = service.recruitinfo(param);
+		CoinfotbDTO coinfo = coinfoservice.Coinfotbinfo(param);
+		
 		log.info("@# jobinfoData: " + jobinfoData);
 		model.addAttribute("jobinfoData", jobinfoData);
+		model.addAttribute("companyInfo", coinfo);
 		model.addAttribute("status", "ps");
+		model.addAttribute("scribe_tf", scribe==null?"F":"T");
+		model.addAttribute("minileft", "F");
+		
+		log.info("@# gender : " + jobaplyservice.getGenderStatistics(param));
+		model.addAttribute("genderStats", jobaplyservice.getGenderStatistics(param));
+		
+		log.info("@# gender : " + jobaplyservice.getAgeStatistics(param));
+		model.addAttribute("ageStats", jobaplyservice.getAgeStatistics(param));
+		
+		log.info("@# gender : " + jobaplyservice.getEducationStatistics(param));
+		model.addAttribute("educationStats", jobaplyservice.getEducationStatistics(param));
 		
 		return "recruit/recruitinfo";
 	}
+	
+	@GetMapping("/skillPopup")
+	public String skillPopup(@RequestParam HashMap<String, String> param, Model model, HttpSession session) {
+		List<ShowskilltbDTO> showskilldto = showskillservice.selectAll();
+		List<SkilltbDTO> skilldto = skillservice.select_resume(param);
+		
+		model.addAttribute("showskilldto", showskilldto); //스킬 출력 목록
+		model.addAttribute("skilldto", skilldto); //선택한 스킬 출력
+			
+	     return "recruit/skillPopup";
+	 }
 }

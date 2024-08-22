@@ -13,27 +13,35 @@
 	
 	<div class="container">
 		
-	<section class="section">
-		<h2>취업 게시판</h2>
-	</section>
-		
-	<div class="boardsearchwrite">
-		<button id="boardsearchwrite"><a href="write_view" style="text-decoration: none;">글 작성하기</a></button>
+	<div class="section">
+		<h3>취업 게시판</h3>
+		<button id="myPostsButton">작성한글 보기</button>
+		<a href="write_view" style="text-decoration: none;"><button class="boardsearchwrite">글 작성하기</button></a>
 	</div>
-
-	<table width="1000">
-		<th>번호</th>	
-		<th>작성자</th>	
-		<th>제목</th>	
-		<th>작성일</th>	
-		<th class="th_last">조회수</th>	
+	
+	<div class="dropMenu">
+        <select id="selectSort" name="sortOrder" onchange="submitForm()">
+            <option>정렬방식</option>
+            <option value="views_desc" ${sortOrder == 'views_desc' ? 'selected' : ''}>조회수 높은 순</option>
+            <option value="views_asc" ${sortOrder == 'views_asc' ? 'selected' : ''}>조회수 낮은 순</option>
+            <option value="date_desc" ${sortOrder == 'date_desc' ? 'selected' : ''}>최근에 올린 순</option>
+            <option value="date_asc" ${sortOrder == 'date_asc' ? 'selected' : ''}>예전에 올린 순</option>
+        </select>
+	</div>
+	
+	<table>
+		<tr class="first">
+			<td>번호</td>	
+			<td>작성자</td>	
+			<td>제목</td>	
+			<td>작성일</td>	
+			<td class="th_last">조회수</td>
+		</tr>
 		<c:forEach items="${list}" var="dto">
-			<tr>
+			<tr class="second" onclick="location.href='/content_view?boardno=${dto.boardno}&pageNum=${pageMaker.cri.pageNum}&amount=${pageMaker.cri.amount}&type=${pageMaker.cri.type}&keyword=${pageMaker.cri.keyword}'">
 				<td class="boardno_td">${dto.boardno}</td>
 				<td class="authorid_td">${dto.authorid}</td>
-				<td class="title_td">
-					<a class="move_link" href="${dto.boardno}">${dto.title}</a>
-				</td>
+				<td class="title_td">${dto.title}</td>
 				<td class="adate_td"><fmt:formatDate value="${dto.adate }" pattern="yyyy-MM-dd"/></td>
 				<td class="boardhit">${dto.boardhit}</td>
 			</tr>
@@ -72,20 +80,24 @@
 		<!-- 페이징 검색시 페이지번호를 클릭할때 필요한 파라미터 -->
 		<input type="hidden" name="type" value="${pageMaker.cri.type}">
 		<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+		<input type="hidden" name="sort" value="${pageMaker.cri.sort}">
+		<input type="hidden" name="order" value="${pageMaker.cri.order}">
+		<input type="hidden" id="sortOrder" name="sortOrder" value="${sortOrder}">
 	</form>
 	
 	<div class="search">
-	<form method="get">
-		<select name="type" class="searchoption">
+	<form id="searchForm" method="get">
+		<select name="type" name="searchbox" class="searchoption">
 			<option value="TCW" <c:out value="${pageMaker.cri.type eq 'TCW' ? 'selected':''}"/> >전체</option>
 			<option value="T" <c:out value="${pageMaker.cri.type eq 'T' ? 'selected':''}"/> >제목</option>
 			<option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected':''}"/> >내용</option>
 			<option value="W" <c:out value="${pageMaker.cri.type eq 'W' ? 'selected':''}"/> >작성자</option>
 		</select>
-		<input type="text" id="boardsearchbar" name="keyword" value="${pageMaker.cri.keyword}">
-		 <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"> 
+		<input type="text" id="boardsearchbar" name="keyword" value="${pageMaker.cri.keyword}" placeholder="  검색어를 입력해주세요">
+		<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"> 
 		<input type="hidden" name="pageNum" value="1">
 		<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+		<input type="hidden" name="mypost" value="">
 		<button id="boardsearchbutton">검색</button>
 	</form>
 	</div>
@@ -148,11 +160,12 @@
 		// 	alert("검색종류를 선택하세요.");
 		// 	return false;
 		// }
-
-		if(searchForm.find("option:selected").val() != "" && !searchForm.find("input[name='keyword']").val()){
+		var selectboxvalue = document.getElementById("searchbox").value;
+		if(selectboxvalue != 'TCW' ||(searchForm.find("option:selected").val() != "" && !searchForm.find("input[name='keyword']").val())){
 			alert("키워드를 입력하세요.");
 			return false;
 		}
+		searchForm.find("input[name='mypost']").val("");
 		searchForm.attr("action","list").submit();
 	});//end of searchForm click
 
@@ -164,6 +177,33 @@
 			searchForm.find("input[name='keyword']").val("");
 		}
 	});//end of searchForm select change
+	
+	<% 
+	    // 세션에서 현재 로그인 중인 아이디 가져오기
+	    String UserId = (String) session.getAttribute("id"); 
+	%>
+
+    // JSP에서 가져온 로그인된 아이디를 JavaScript 변수에 설정
+    var id = "<%= UserId != null ? UserId : "" %>";
+
+    $(document).ready(function() {
+        $("#myPostsButton").on("click", function() {
+            // 검색 폼에서 타입을 'W'로 설정
+           	searchForm.find("select[name='type']").val("W");
+            // 사용자 ID를 키워드로 설정
+            searchForm.find("input[name='keyword']").val(id);
+            searchForm.find("input[name='mypost']").val("my");
+            // 폼을 제출
+            searchForm.attr("action", "list").submit();
+			document.getElementById().reset();
+        });
+    });
+    
+    function submitForm() {
+    	var sort = $("#selectSort").val();
+		$("#sortOrder").val(sort);
+        document.getElementById("actionForm").submit();
+    }
 </script>
 
 

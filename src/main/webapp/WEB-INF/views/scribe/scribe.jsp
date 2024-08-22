@@ -7,25 +7,29 @@
 <meta charset="UTF-8">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/style/scribe/scribe.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/scribe/scribe_fn.js"></script>
 </head>
 <jsp:include page="../../header.jsp"/>
 <body>
 	<div class="container">
-		<section class="section">
-			<h2>스크랩 현황</h2>
-		</section>
+		<div class="section">
+			<h3>나의 관심 기업</h3>
+		</div>
 	
-		<table width="1000">
-			<th>번호</th>	
-			<th>기업명</th>	
-			<th>등록일</th>	
-			<c:forEach items="${list}" var="dto">
-				<tr>
-					<td class="boardno_td">${dto.boardno}</td>
-					<td class="authorid_td">${dto.authorid}</td>
-					<td class="title_td">
-						<a class="move_link" href="${dto.boardno}">${dto.title}</a>
+		<table>
+			<tr class="first">
+				<td width="100">번호</td>	
+				<td width="300">기업명</td>
+				<td width="100">위치</td>
+				<td width="200">등록일</td>	
+			</tr>
+			<c:forEach items="${scribelist}" var="dto">
+				<tr class="second">
+					<td class="boardno_td">${dto.rn}</td>
+					<td class="authorid_td">
+   						<a href="/coinfoshow?writer=${dto.scribeid}&gubun=post">${dto.cusnm}</a>
 					</td>
+					<td class="title_td">${dto.caddr}</td>
 					<td class="adate_td"><fmt:formatDate value="${dto.adate }" pattern="yyyy-MM-dd"/></td>
 				</tr>
 			</c:forEach>
@@ -66,18 +70,16 @@
 		</form>
 	
 		<div class="search">
-			<form method="get">
+			<form method="get" id="searchForm">
 				<select name="type" class="searchoption">
-					<option value="" <c:out value="${pageMaker.cri.type == null ? 'selected':''}"/> >전체</option>
-					<option value="T" <c:out value="${pageMaker.cri.type eq 'T' ? 'selected':''}"/> >제목</option>
-					<option value="C" <c:out value="${pageMaker.cri.type eq 'C' ? 'selected':''}"/> >내용</option>
-					<option value="W" <c:out value="${pageMaker.cri.type eq 'W' ? 'selected':''}"/> >작성자</option>
+					<option value="all" <c:out value="${pageMaker.cri.type eq 'all' ? 'selected':''}"/> >전체</option>
+					<option value="nm" <c:out value="${pageMaker.cri.type eq 'nm' ? 'selected':''}"/> >기업명</option>
+					<option value="lc" <c:out value="${pageMaker.cri.type eq 'lc' ? 'selected':''}"/> >위치</option>
 				</select>
 				<input type="text" id="boardsearchbar" name="keyword" value="${pageMaker.cri.keyword}">
 				 <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}"> 
-				<input type="hidden" name="pageNum" value="1">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-				<button id="boardsearchbutton">검색</button>
+				<button id="boardsearchbutton" onclick="search()">검색</button>
 			</form>
 		</div>
 	</div>
@@ -95,14 +97,8 @@
 		console.log("click~!!!");
 		console.log("@# href=>"+$(this).attr("href"));
 
-		// 게시글 클릭후 뒤로가기 누른후 다른 페이지 클릭할때 &boardno=번호 계속 누적되는거 방지
-		var bno = actionForm.find("input[name='boardno']").val();
-		if(bno != ""){
-			actionForm.find("input[name='boardno']").remove();
-		}
-
 		actionForm.find("input[name='pageNum']").val($(this).attr("href"));
-		actionForm.attr("action","list").submit();
+		actionForm.attr("action", "scribe").submit();
 	});//end of paginate_button clcik
 
 	// 	게시글 처리
@@ -128,24 +124,6 @@
 	});//end of move_link click
 
 	var searchForm = $("#searchForm");
-
-	// 	Search 버튼 클릭
-	// $("#searchForm").on("click", function(){
-	$("#searchForm button").on("click", function(){
-		// alert("검색");
-
-		// 아래는 검색종류까지 할때 참고
-		// if(!searchForm.find("option:selected").val()){
-		// 	alert("검색종류를 선택하세요.");
-		// 	return false;
-		// }
-
-		if(searchForm.find("option:selected").val() != "" && !searchForm.find("input[name='keyword']").val()){
-			alert("키워드를 입력하세요.");
-			return false;
-		}
-		searchForm.attr("action","list").submit();
-	});//end of searchForm click
 
 	// 	type 콤보박스 변경
 	$("#searchForm select").on("change", function(){

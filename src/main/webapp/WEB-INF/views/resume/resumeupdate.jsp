@@ -47,8 +47,8 @@
                         <div class="input-container w100">
                             <select id="gender" class="" required name="gender">
                                 <option value="" disabled selected>성별</option>
-                                <option value="1" ${resumeselect.gendr eq 1 ? 'selected' : '' }>남성</option>
-                                <option value="2" ${resumeselect.gendr eq 2 ? 'selected' : '' }>여성</option>
+                                <option value="1" ${resumeselect.gender eq 1 ? 'selected' : '' }>남성</option>
+                                <option value="2" ${resumeselect.gender eq 2 ? 'selected' : '' }>여성</option>
                             </select>
                         </div>
                         <div class="input-container email">
@@ -74,6 +74,15 @@
                     <div class="form-container"></div>
                 </div>
                 <div class="form-section skill-container">
+                	<h3>직무</h3>
+					<div class="job-selection">
+					    <select class="selection" name="job" required>
+					    	<option value="" >직무선택</option>
+					    	<c:forEach items="${jobsort }" var="jobsort">
+					    		<option value="${jobsort.sortno }" ${resumeselect.job eq jobsort.sortno ? 'selected':'' }>${jobsort.sortnm }</option>	
+					    	</c:forEach>
+					    </select>
+					</div>
                     <h3>스킬</h3>
                     <input type="hidden" id="skillno" name="skillno">
                     <div id="show-skill">
@@ -81,7 +90,7 @@
                             <button type="button" class="skill-button" value="${showskilldto.skillno }" data-no="${showskilldto.skillno }">${showskilldto.skillnm }</button>
                         </c:forEach>
                     </div>
-                    <h3>내가 선택한 스킬 (<span id="selectedCount">0</span>/15)</h3>
+                    <h3>내가 선택한 스킬 (<span id="selectedCount">0</span>/36)</h3>
                     <div class="selected-skills">
                     	<%-- <input type="hidden" id="selectedSkills" name="selectedSkills" value=""> --%>
                         <c:forEach items="${skilldto }" var="skilldto">
@@ -99,6 +108,7 @@
                                 <option value="1" ${resumeselect.classgb eq 1 ? 'selected' : '' }>고등학교 졸업</option>
                                 <option value="2" ${resumeselect.classgb eq 2 ? 'selected' : '' }>대학교(2,3년)</option>
                                 <option value="3" ${resumeselect.classgb eq 3 ? 'selected' : '' }>대학교(4년)</option>
+                                <option value="4" ${resumeselect.classgb eq 4 ? 'selected' : '' }>대학원</option>
                             </select>
                         </div>
                         <div class="input-container fx-1">
@@ -157,9 +167,58 @@
                             </select>
                         </div>
                     </div>
+                    <h3>경력&nbsp;
+		                <button type="button" class="postal-button" onclick="add_career()">+ 추가</button>
+		                <button type="button" class="postal-button" onclick="removediv()">- 제거</button>
+                    </h3>
+                    <div id="addArea">
+	                	<input type="hidden" id="corpnm_s" name="corpnm_s">
+	                	<input type="hidden" id="sdate_s" name="sdate_s">
+	                	<input type="hidden" id="edate_s" name="edate_s">
+	                	<input type="hidden" id="wrkty_s" name="wrkty_s">
+	                	<input type="hidden" id="position_s" name="position_s">
+	                	<input type="hidden" id="task_s" name="task_s">
+	                	<%-- 경력 입력란 추가 --%>
+	                    <c:forEach var="career" items="${rcareerList}">
+	                    	<div>
+				                <div class="form-container">
+				                    <div class="input-container">
+				                        <input type="text" id="corporate" name="corpnm_c" value="${career.corpnm}" placeholder=" " />
+				                        <label for="corporate">회사명</label>
+				                    </div>
+				                    <div class="input-container">
+				                    	<fmt:formatDate value="${career.sdate}" var="sdate" pattern="yyyy-MM-dd"/>
+				                        <input type="text" id="employment" name="sdate_c" value="${sdate}" placeholder=" " required maxlength="8" required onkeyup="formatDate(event)"/>
+				                        <label for="employment">입사년월</label>
+				                    </div>
+				                    <div class="input-container">
+				                    	<fmt:formatDate value="${career.edate}" var="edate" pattern="yyyy-MM-dd"/>
+				                        <input type="text" id="resignation" name="edate_c" value="${edate}" placeholder=" " required maxlength="8" required onkeyup="formatDate(event)"/>
+				                        <label for="resignation">퇴사년월</label>
+				                    </div>
+				                    <div class="wrkty-types">
+				                        <select class="types" name="wrkty_c" required>
+				                            <option value="">근무형태</option>
+		                                    <option value="1" ${career.wrkty == 1 ? 'selected' : ''}>정규직</option>
+		                                    <option value="2" ${career.wrkty == 2 ? 'selected' : ''}>계약직</option>
+		                                    <option value="3" ${career.wrkty == 3 ? 'selected' : ''}>기간제</option>
+				                        </select>
+				                    </div>
+				                    <div class="input-position">
+				                        <input type="text" id="position" name="position_c" value="${career.position }" placeholder=" " />
+				                        <label for="position">직급</label>
+				                    </div>
+				                </div>
+				                <div class="input-container">
+				                    <input type="text" id="business" name="task_c" value="${career.task }" placeholder=" " />
+				                    <label for="business">주요업무</label>
+				                </div>
+			                </div>
+		                </c:forEach>
+	                </div>
 					<div class="input-container">
 						<h3>포트폴리오</h3>
-						<input type="text" id="propo" name="propo" placeholder="git주소 및 url등록해주세요"  />
+						<input type="text" id="propo" name="propo" placeholder="git주소 및 url등록해주세요" value="${resumeselect.propo}" />
 					</div>
                     <div class="form-section">
                         <h3>자기소개서</h3>
@@ -172,8 +231,10 @@
                 </div>
                 <div>
 	                <button type="button" class="submit-button" onclick="Resumelist()">목록보기</button>&nbsp;
-	                <button type="button" class="submit-button" onclick="updateResume()">수정</button>
                 </div>
+				<div>
+	                <button type="button" class="crystal-button" onclick="updateResume()">수정</button>
+				</div>	
             </form>
         </section>
     </div>
